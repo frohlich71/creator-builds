@@ -15,6 +15,12 @@ export default function FloatingInput({ label, id, register, type, ...rest }: Fl
     <div className="relative">
       <input
         {...register}
+        onInput={e => {
+          if (register && register.onChange) {
+            register.onChange(e);
+          }
+         
+        }}
         {...rest}
         id={id}
         type={type || 'text'}
