@@ -22,15 +22,32 @@ export default function CreateSetupForm({ onCancel }: { onCancel: () => void }) 
   const setupService = useSetupService();
   const {showError} = useNotificationContext();
 
-  const { register, control, handleSubmit, setValue } = useForm<SetupForm>({
+  const { register, control, handleSubmit, setValue, formState: { errors } } = useForm<SetupForm>({
     defaultValues: {
       setupName: "",
       equipments: [{ name: "", asin: "" }],
     },
+    mode: 'onChange'
   });
   
 
   function onSubmit(data: SetupForm) {
+    // Validação: verificar se há pelo menos um equipamento
+    if (!data.equipments || data.equipments.length === 0) {
+      showError("Validation Error", "You must add at least one equipment to create a setup.");
+      return;
+    }
+
+    // Validação: verificar se todos os equipamentos têm nome e ASIN preenchidos
+    const hasEmptyFields = data.equipments.some(equipment => 
+      !equipment.name.trim() || !equipment.asin.trim()
+    );
+
+    if (hasEmptyFields) {
+      showError("Validation Error", "All equipment fields (name and ASIN) must be filled.");
+      return;
+    }
+
     NProgress.start();
     
     setupService.createSetup({
@@ -47,7 +64,7 @@ export default function CreateSetupForm({ onCancel }: { onCancel: () => void }) 
       })
       .catch((err) => {
         console.error("Error creating setup:", err);
-        showError("Erro ao criar setup", "Não foi possível criar o setup. Tente novamente.");
+        showError("Error creating setup", "There was an error creating the setup. Please try again.");
         NProgress.done();
       });
   }
@@ -56,25 +73,30 @@ export default function CreateSetupForm({ onCancel }: { onCancel: () => void }) 
     <form onSubmit={handleSubmit(onSubmit)}>
       <FloatingInput
         id="setupName"
-        
         label="Setup name"
-        register={register("setupName", { required: true })}
+        register={register("setupName", { 
+          required: "Setup name is required",
+          minLength: { value: 1, message: "Setup name cannot be empty" }
+        })}
       />
+      {errors.setupName && (
+        <p className="mt-1 text-sm text-red-600">{errors.setupName.message}</p>
+      )}
 
-      <AddEquipments control={control} register={register} setValue={setValue}/>
-      <div className="flex gap-4 justify-end mt-4">
+      <AddEquipments control={control} register={register} setValue={setValue} errors={errors}/>
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:justify-end mt-6">
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-sm cursor-pointer transition-all duration-300 bg-rose-50 px-2 py-1 text-sm font-semibold text-rose-600 shadow-xs hover:bg-rose-100"
+          className="w-full sm:w-auto order-2 sm:order-1 rounded-md cursor-pointer transition-all duration-300 bg-rose-50 px-4 py-2 text-sm font-semibold text-rose-600 shadow-sm hover:bg-rose-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="rounded-sm cursor-pointer transition-all duration-300 bg-rose-600 px-2 py-1 text-sm font-semibold text-white shadow-xs hover:bg-rose-500 focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-rose-600"
+          className="w-full sm:w-auto order-1 sm:order-2 rounded-md cursor-pointer transition-all duration-300 bg-rose-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
         >
-          Save
+          Save Setup
         </button>
       </div>
     </form>

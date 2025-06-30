@@ -1,13 +1,13 @@
 import { getProfileByName } from '@/app/service/profile'
 import { getServerSession, User } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/app/lib/auth'
 import Profile from '@/app/ui/components/Profile'
 import { redirect } from 'next/navigation'
 import SetupWrapper from '@/app/ui/screens/Setup/Wrapper'
 import { validateProfileOwnership } from '@/app/utils/profileValidation'
 
 
-export default async function Setup({ params }: { params: { id: string }}) {
+export default async function Setup({ params }: { params: Promise<{ id: string }> }) {
 
   const session = await getServerSession(authOptions)
 

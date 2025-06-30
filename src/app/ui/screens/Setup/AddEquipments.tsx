@@ -1,5 +1,5 @@
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { Control, useFieldArray, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import { Control, useFieldArray, UseFormRegister, UseFormSetValue, FieldErrors } from "react-hook-form";
 import { SetupForm } from "./CreateSetupForm";
 import FloatingInput from "../../components/FloatingInput";
 import ComboWithImage from '../../components/ComboWithImage';
@@ -8,7 +8,12 @@ import { useProductService } from '../../../service/useProductService';
 import { Product } from '@/types/product';
 
 
-export default function AddEquipments({control, register, setValue}: {control: Control<SetupForm>, register: UseFormRegister<SetupForm>, setValue: UseFormSetValue<SetupForm>}) {
+export default function AddEquipments({control, register, setValue, errors}: {
+  control: Control<SetupForm>, 
+  register: UseFormRegister<SetupForm>, 
+  setValue: UseFormSetValue<SetupForm>,
+  errors: FieldErrors<SetupForm>
+}) {
   
   const productService = useProductService();
   const { fields, append, remove } = useFieldArray({
@@ -63,8 +68,14 @@ export default function AddEquipments({control, register, setValue}: {control: C
                 <FloatingInput
                   id={`equipments.${index}.name`}
                   label="Name"
-                  register={register(`equipments.${index}.name`)}
+                  register={register(`equipments.${index}.name`, {
+                    required: "Equipment name is required",
+                    minLength: { value: 1, message: "Equipment name cannot be empty" }
+                  })}
                 />
+                {errors.equipments?.[index]?.name && (
+                  <p className="mt-1 text-sm text-red-600">{errors.equipments[index]?.name?.message}</p>
+                )}
               </div>
               <div className="col-span-12 sm:col-span-4">
                 <ComboWithImage
@@ -82,21 +93,21 @@ export default function AddEquipments({control, register, setValue}: {control: C
                   placeholder="Search item..."
                   onInputChange={(query) => handleProductSearch(index, query)}
                 />
+                {/* Hidden input para validação do ASIN */}
+                <input
+                  type="hidden"
+                  {...register(`equipments.${index}.asin`, {
+                    required: "You must select an item from the list"
+                  })}
+                />
+                {errors.equipments?.[index]?.asin && (
+                  <p className="mt-1 text-sm text-red-600">{errors.equipments[index]?.asin?.message}</p>
+                )}
               </div>
               <div className="col-span-12 sm:col-span-4 mt-2">
                 <button
                   type="button"
-                  onClick={() => {
-                    const canAppend = fields.every((_, index) => {
-                      const name = (document.getElementById(`equipments.${index}.name`) as HTMLInputElement)?.value;
-                      const asin = (document.getElementById(`equipments.${index}.asin`) as HTMLInputElement)?.value;
-                      return name?.trim() !== '' && asin?.trim() !== '';
-                    });
-
-                    if (!canAppend) return;
-
-                    handleAppend();
-                  }}
+                  onClick={() => handleAppend()}
                   className="rounded-sm cursor-pointer transition-all duration-300 bg-rose-50 px-2 py-1 text-xs font-semibold text-rose-600 shadow-xs hover:bg-rose-100"
                 >
                   <PlusIcon aria-hidden="true" className=" size-5" />

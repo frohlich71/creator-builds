@@ -8,6 +8,7 @@ import {
 } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { signOut, useSession } from 'next-auth/react'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { User } from 'next-auth'
 import { getProfileByName } from '@/app/service/profile'
@@ -43,10 +44,12 @@ export default function Header() {
             <div className="absolute left-0 shrink-0 lg:static">
               <Link href="/">
                 <span className="sr-only">Creator builds logo</span>
-                <img
+                <Image
                   alt="Creator builds logo"
                   src="/logo.jpg"
-                  className="h-8 w-auto"
+                  width={130}
+                  height={130}
+                  className="h-auto w-auto"
                 />
               </Link>
             </div>
@@ -86,10 +89,12 @@ export default function Header() {
               <div className="pt-3 pb-2">
                 <div className="flex items-center justify-between px-4">
                   <div>
-                    <img
+                    <Image
                       alt="Creator builds logo"
                       src="/logo.jpg"
-                      className="h-8 w-auto"
+                      width={130}
+                      height={130}
+                      className="h-auto w-auto"
                     />
                   </div>
                   <div className="-mr-2">
@@ -104,7 +109,13 @@ export default function Header() {
               <div className="pt-4 pb-2">
                 <div className="flex items-center px-5">
                   <div className="shrink-0">
-                    <img alt="" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" className="size-10 rounded-full" />
+                    <Image
+                      alt="Profile picture"
+                      src={user?.profileImage && user?.profileImage.trim() !== '' ? user?.profileImage : '/fallback.png'}
+                      width={32}
+                      height={32}
+                      className="size-8 rounded-full"
+                    />
                   </div>
                   <div className="ml-3 min-w-0 flex-1">
                     <div className="truncate text-base font-medium text-gray-800">{user?.name}</div>
