@@ -79,7 +79,7 @@ export default function Home() {
                 getImageUrl={getUserImage}
                 onInputChange={handleQueryChange}
                 isLoading={isSearchLoading}
-                noResultsMessage="Nenhum criador encontrado"
+                noResultsMessage="No creators found"
               />
             </div>
             

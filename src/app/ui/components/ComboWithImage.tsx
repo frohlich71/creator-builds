@@ -23,12 +23,12 @@ export default function ComboWithImage<T extends { id: string | number } = { id:
   options,
   value,
   onChange,
-  label = 'Selecionar',
+  label = 'Select',
   getLabel = (item: unknown) => (item as { name: string }).name,
   getImageUrl = (item) => (item as unknown as { imageUrl: string }).imageUrl,
   onInputChange,
   isLoading = false,
-  noResultsMessage = "Nenhum resultado encontrado",
+  noResultsMessage = "No results found",
   onItemHover,
 }: ComboWithImageProps<T>) {
   const [query, setQuery] = useState('')
@@ -85,7 +85,7 @@ export default function ComboWithImage<T extends { id: string | number } = { id:
               <div className="relative cursor-default py-2 px-3 text-gray-900 select-none">
                 <div className="flex items-center">
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-rose-600"></div>
-                  <span className="ml-3 text-gray-500">Buscando...</span>
+                  <span className="ml-3 text-gray-500">Searching...</span>
                 </div>
               </div>
             ) : filteredOptions.length > 0 ? (

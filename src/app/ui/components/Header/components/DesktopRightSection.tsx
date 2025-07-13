@@ -2,20 +2,47 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
+import ComboWithImage from "../../ComboWithImage";
+import { useUserSearch } from "@/app/hooks/useUserSearch";
+import { SearchUser } from "@/types/search";
+import { useRouter } from "next/navigation";
 
 
 export default function DesktopRightSection({isAuthenticated, setLoginDrawerOpen, username, profileImage}: {isAuthenticated: boolean, setLoginDrawerOpen: (open: boolean) => void, username: string | undefined| null, profileImage?: string}) {
   
-  
+  const { users, handleQueryChange, isLoading: isSearchLoading } = useUserSearch()
+  const router = useRouter()
+
   async function handleSignOut() {
     await signOut({callbackUrl: '/'})
   }
 
+  const handleUserSelect = (selectedUser: SearchUser | null) => {
+    if (selectedUser) {
+      router.push(`/profile/${selectedUser.name}`)
+    }
+  }
+
+  const getUserLabel = (user: SearchUser) => user.nickname || user.name
+  const getUserImage = (user: SearchUser) => user.image || user.profileImage || '/fallback.png'
+
   return (
     <>
       {isAuthenticated ? (<div className="hidden lg:ml-4 lg:flex lg:items-center lg:pr-0.5">
-            {/* ...existing code... */}
-
+            {/* Search creators combo */}
+            <div className="w-64 mr-4">
+              <ComboWithImage
+                options={users}
+                value={null}
+                onChange={handleUserSelect}
+                label="Search creators"
+                getLabel={getUserLabel}
+                getImageUrl={getUserImage}
+                onInputChange={handleQueryChange}
+                isLoading={isSearchLoading}
+                noResultsMessage="No creators found"
+              />
+            </div>
 
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-4 shrink-0">

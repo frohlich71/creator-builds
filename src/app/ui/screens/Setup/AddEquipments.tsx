@@ -1,9 +1,9 @@
 import { MinusIcon, PlusIcon, LinkIcon } from "@heroicons/react/24/outline";
-import { Control, useFieldArray, UseFormRegister, UseFormSetValue, FieldErrors } from "react-hook-form";
+import { Control, useFieldArray, UseFormRegister, UseFormSetValue, FieldErrors, useWatch } from "react-hook-form";
 import { SetupForm } from "./CreateSetupForm";
 import FloatingInput from "../../components/FloatingInput";
 import ComboWithImage from "../../components/ComboWithImage";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Estrutura de dados para os ícones de equipamentos
 const EQUIPMENT_ICONS = [
@@ -37,6 +37,25 @@ export default function AddEquipments({control, register, setValue, errors}: {
   const [selectedIcons, setSelectedIcons] = useState<(typeof EQUIPMENT_ICONS[0] | null)[]>(
     fields.map(() => null)
   );
+
+  // Watch dos valores dos ícones no formulário para sincronizar o estado
+  const watchedIcons = useWatch({
+    control,
+    name: 'equipments'
+  });
+
+  // Sincronizar selectedIcons com os valores do formulário (para casos de edição)
+  useEffect(() => {
+    if (watchedIcons) {
+      const newSelectedIcons = watchedIcons.map(equipment => {
+        if (equipment?.icon) {
+          return EQUIPMENT_ICONS.find(icon => icon.id === equipment.icon) || null;
+        }
+        return null;
+      });
+      setSelectedIcons(newSelectedIcons);
+    }
+  }, [watchedIcons]);
 
   function handleAppend() {
     append({ name: '', brand: '', model: '', icon: '', link: '' });
