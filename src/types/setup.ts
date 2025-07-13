@@ -1,5 +1,4 @@
 import { User } from "next-auth"
-import { Product } from "./product"
 
 export type Setup = {
   _id: string
@@ -11,5 +10,8 @@ export type Setup = {
 export type Equipment = {
   _id: string
   name: string
-  product: Product
+  brand: string
+  model: string
+  icon: string
+  link: string
 }

@@ -2,7 +2,7 @@
 
 import normalizeUrl from "@/app/utils/normalizeUrl";
 import { CheckIcon } from "@heroicons/react/20/solid";
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
+import { ArrowTopRightOnSquareIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { User } from "next-auth";
 import Link from "next/link";
 import { SocialIcon } from "react-social-icons";
@@ -12,7 +12,7 @@ export default function Profile ({user, isOwner = false}: {user: User, isOwner?:
 
   return (
     <div className="flex flex-col items-center p-6">
-      <span className="relative inline-block">
+      <span className="relative inline-block group">
         <Image
           alt="Profile picture"
           src={user.profileImage && user.profileImage.trim() !== '' ? user.profileImage : '/fallback.png'}
@@ -20,9 +20,17 @@ export default function Profile ({user, isOwner = false}: {user: User, isOwner?:
           height={104}
           className="size-26 rounded-full"
         />
-        <span className="absolute right-0 bottom-2 block size-4 rounded-full bg-red-400 ring-2 ring-white"> 
+        <span className="absolute right-0 bottom-2 block size-4 rounded-full bg-blue-400 ring-2 ring-white group-hover:opacity-0 transition-opacity duration-300"> 
           <CheckIcon className="size-3 ml-0.5 mt-0.5 text-white" />
         </span>
+        {isOwner && (
+          <Link 
+            href="/edit-profile"
+            className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          >
+            <PencilIcon className="size-6 text-white" />
+          </Link>
+        )}
       </span>
       <p className="mt-4 text-lg font-semibold">{user.nickname}</p>
       <p className="text-sm text-gray-500">@{user.name}</p>

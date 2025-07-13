@@ -9,8 +9,11 @@ import { useNotificationContext } from "@/app/contexts/NotificationContext";
 
 
 export type EquipmentDTO = {
-  name: string;
-  asin: string;
+  name: string;        // apelido
+  brand: string;       // marca
+  model: string;       // modelo
+  icon: string;        // ícone (obrigatório)
+  link: string;        // link (obrigatório)
 };
 export type SetupForm = {
   setupName: string;
@@ -25,7 +28,7 @@ export default function CreateSetupForm({ onCancel }: { onCancel: () => void }) 
   const { register, control, handleSubmit, setValue, formState: { errors } } = useForm<SetupForm>({
     defaultValues: {
       setupName: "",
-      equipments: [{ name: "", asin: "" }],
+      equipments: [{ name: "", brand: "", model: "", icon: "", link: "" }],
     },
     mode: 'onChange'
   });
@@ -38,13 +41,14 @@ export default function CreateSetupForm({ onCancel }: { onCancel: () => void }) 
       return;
     }
 
-    // Validação: verificar se todos os equipamentos têm nome e ASIN preenchidos
+    // Validação: verificar se todos os equipamentos têm campos obrigatórios preenchidos
     const hasEmptyFields = data.equipments.some(equipment => 
-      !equipment.name.trim() || !equipment.asin.trim()
+      !equipment.name.trim() || !equipment.brand.trim() || !equipment.model.trim() || 
+      !equipment.icon.trim() || !equipment.link.trim()
     );
 
     if (hasEmptyFields) {
-      showError("Validation Error", "All equipment fields (name and ASIN) must be filled.");
+      showError("Validation Error", "All equipment fields (name, brand, model, icon, and link) must be filled.");
       return;
     }
 

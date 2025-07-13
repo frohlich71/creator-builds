@@ -1,52 +1,51 @@
-import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { MinusIcon, PlusIcon, LinkIcon } from "@heroicons/react/24/outline";
 import { Control, useFieldArray, UseFormRegister, UseFormSetValue, FieldErrors } from "react-hook-form";
 import { SetupForm } from "./CreateSetupForm";
 import FloatingInput from "../../components/FloatingInput";
-import ComboWithImage from '../../components/ComboWithImage';
-import { useState } from 'react';
-import { useProductService } from '../../../service/useProductService';
-import { Product } from '@/types/product';
+import ComboWithImage from "../../components/ComboWithImage";
+import { useState } from "react";
 
+// Estrutura de dados para os ícones de equipamentos
+const EQUIPMENT_ICONS = [
+  { id: "monitor", name: "Monitor", imageUrl: "/icons/monitor.png" },
+  { id: "keyboard", name: "Keyboard", imageUrl: "/icons/keyboard.png" },
+  { id: "mouse", name: "Mouse", imageUrl: "/icons/mouse.png" },
+  { id: "headset", name: "Headset", imageUrl: "/icons/headset.png" },
+  { id: "speakers", name: "Speakers", imageUrl: "/icons/speakers.png" },
+  { id: "camera", name: "Camera", imageUrl: "/icons/camera.png" },
+  { id: "joystick", name: "Joystick", imageUrl: "/icons/joystick.png" },
+  { id: "laptop", name: "Laptop", imageUrl: "/icons/laptop.png" },
+  { id: "printer", name: "Printer", imageUrl: "/icons/printer.png" },
+  { id: "light", name: "Light", imageUrl: "/icons/light.png" },
+  { id: "cable", name: "Cable", imageUrl: "/icons/cable.png" },
+  { id: "other", name: "Other", imageUrl: "/icons/other.png" },
+];
 
 export default function AddEquipments({control, register, setValue, errors}: {
   control: Control<SetupForm>, 
-  register: UseFormRegister<SetupForm>, 
+  register: UseFormRegister<SetupForm>,
   setValue: UseFormSetValue<SetupForm>,
   errors: FieldErrors<SetupForm>
 }) {
   
-  const productService = useProductService();
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'equipments',
   });
 
-  // Estado para produtos buscados e seleção
-  const [productOptions, setProductOptions] = useState<Product[][]>(fields.map(() => []));
-  const [selectedProducts, setSelectedProducts] = useState<(Product | null)[]>(fields.map(() => null));
+  // Estado para controlar os ícones selecionados
+  const [selectedIcons, setSelectedIcons] = useState<(typeof EQUIPMENT_ICONS[0] | null)[]>(
+    fields.map(() => null)
+  );
 
-  // Atualiza os estados ao adicionar/remover campos
   function handleAppend() {
-    append({ name: '', asin: '' });
-    setProductOptions((opts) => [...opts, []]);
-    setSelectedProducts((sel) => [...sel, null]);
+    append({ name: '', brand: '', model: '', icon: '', link: '' });
+    setSelectedIcons(prev => [...prev, null]);
   }
+  
   function handleRemove(index: number) {
     remove(index);
-    setProductOptions((opts) => opts.filter((_, i) => i !== index));
-    setSelectedProducts((sel) => sel.filter((_, i) => i !== index));
-  }
-
-  // Busca produtos conforme digitação
-  async function handleProductSearch(index: number, query: string) {
-    if (query.length < 2) {
-      setProductOptions((opts) => opts.map((arr, i) => i === index ? [] : arr));
-      return;
-    }
-    let products = await productService.searchByTitle(query, 10);
-    // Garante que cada produto tenha o campo id preenchido com asin
-    products = products.map((p: Product) => ({ ...p, id: p.asin }));
-    setProductOptions((opts) => opts.map((arr, i) => i === index ? products : arr));
+    setSelectedIcons(prev => prev.filter((_, i) => i !== index));
   }
 
   return (
@@ -62,12 +61,13 @@ export default function AddEquipments({control, register, setValue, errors}: {
       </div>
       <div className="px-4 py-5 sm:p-6">
         {fields.map((field, index) => (
-          <div key={field.id} className="mb-4"> 
-            <div className="grid grid-cols-12 gap-6">
+          <div key={field.id} className="mb-6 p-4 border border-gray-200 rounded-lg"> 
+            <div className="grid grid-cols-12 gap-4">
+              {/* Primeira linha: Nome, Marca, Modelo */}
               <div className="col-span-12 sm:col-span-4">
                 <FloatingInput
                   id={`equipments.${index}.name`}
-                  label="Name"
+                  label="Equipment Name (Nickname)"
                   register={register(`equipments.${index}.name`, {
                     required: "Equipment name is required",
                     minLength: { value: 1, message: "Equipment name cannot be empty" }
@@ -77,50 +77,105 @@ export default function AddEquipments({control, register, setValue, errors}: {
                   <p className="mt-1 text-sm text-red-600">{errors.equipments[index]?.name?.message}</p>
                 )}
               </div>
+              
               <div className="col-span-12 sm:col-span-4">
-                <ComboWithImage
-                  options={productOptions[index]}
-                  value={selectedProducts[index]}
-                  onChange={(product) => {
-                    setSelectedProducts((prev) => prev.map((p, i) => i === index ? product : p));
-                    if (product) {
-                      setValue(`equipments.${index}.asin`, product.asin);
-                    }
-                  }}
-                  label="Item"
-                  getLabel={(item) => item.title}
-                  getImageUrl={(item) => item.imgUrl || ''}
-                  placeholder="Search item..."
-                  onInputChange={(query) => handleProductSearch(index, query)}
-                />
-                {/* Hidden input para validação do ASIN */}
-                <input
-                  type="hidden"
-                  {...register(`equipments.${index}.asin`, {
-                    required: "You must select an item from the list"
+                <FloatingInput
+                  id={`equipments.${index}.brand`}
+                  label="Brand"
+                  register={register(`equipments.${index}.brand`, {
+                    required: "Brand is required",
+                    minLength: { value: 1, message: "Brand cannot be empty" }
                   })}
                 />
-                {errors.equipments?.[index]?.asin && (
-                  <p className="mt-1 text-sm text-red-600">{errors.equipments[index]?.asin?.message}</p>
+                {errors.equipments?.[index]?.brand && (
+                  <p className="mt-1 text-sm text-red-600">{errors.equipments[index]?.brand?.message}</p>
                 )}
               </div>
-              <div className="col-span-12 sm:col-span-4 mt-2">
+              
+              <div className="col-span-12 sm:col-span-4">
+                <FloatingInput
+                  id={`equipments.${index}.model`}
+                  label="Model"
+                  register={register(`equipments.${index}.model`, {
+                    required: "Model is required",
+                    minLength: { value: 1, message: "Model cannot be empty" }
+                  })}
+                />
+                {errors.equipments?.[index]?.model && (
+                  <p className="mt-1 text-sm text-red-600">{errors.equipments[index]?.model?.message}</p>
+                )}
+              </div>
+              
+              {/* Segunda linha: Ícone, Link, Botões */}
+              <div className="col-span-12 sm:col-span-3">
+                <ComboWithImage
+                  options={EQUIPMENT_ICONS}
+                  value={selectedIcons[index]}
+                  onChange={(selectedIcon) => {
+                    const newSelectedIcons = [...selectedIcons];
+                    newSelectedIcons[index] = selectedIcon;
+                    setSelectedIcons(newSelectedIcons);
+                    
+                    // Atualiza o valor no formulário
+                    setValue(`equipments.${index}.icon`, selectedIcon ? selectedIcon.id : '');
+                  }}
+                  label="Icon *"
+                  getLabel={(item) => item.name}
+                  getImageUrl={(item) => item.imageUrl}
+                  placeholder="Select an icon..."
+                />
+                
+                {/* Hidden input para validação */}
+                <input
+                  type="hidden"
+                  {...register(`equipments.${index}.icon`, {
+                    required: "Icon is required"
+                  })}
+                  value={selectedIcons[index]?.id || ''}
+                />
+                
+                {errors.equipments?.[index]?.icon && (
+                  <p className="mt-1 text-sm text-red-600">{errors.equipments[index]?.icon?.message}</p>
+                )}
+              </div>
+              
+              <div className="col-span-12 sm:col-span-7">
+                <div className="relative">
+                  <FloatingInput
+                    id={`equipments.${index}.link`}
+                    label="Product Link *"
+                    register={register(`equipments.${index}.link`, {
+                      required: "Product link is required",
+                      pattern: {
+                        value: /^https?:\/\/.+/,
+                        message: "Please enter a valid URL starting with http:// or https://"
+                      }
+                    })}
+                  />
+                  <LinkIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                </div>
+                {errors.equipments?.[index]?.link && (
+                  <p className="mt-1 text-sm text-red-600">{errors.equipments[index]?.link?.message}</p>
+                )}
+              </div>
+              
+              <div className="col-span-12 sm:col-span-2 flex items-start justify-end">
                 <button
                   type="button"
                   onClick={() => handleAppend()}
-                  className="rounded-sm cursor-pointer transition-all duration-300 bg-rose-50 px-2 py-1 text-xs font-semibold text-rose-600 shadow-xs hover:bg-rose-100"
+                  className="rounded-sm cursor-pointer transition-all duration-300 bg-green-200 px-2 py-1 text-xs font-semibold text-black shadow-xs hover:bg-green-100"
                 >
-                  <PlusIcon aria-hidden="true" className=" size-5" />
+                  <PlusIcon aria-hidden="true" className="h-5 w-5" />
                 </button>
 
                 {fields.length > 1 && (
                   <button
-                  type="button"
-                  onClick={() => handleRemove(index)}
-                  className="rounded-sm ml-2 cursor-pointer transition-all duration-300 bg-rose-50 px-2 py-1 text-xs font-semibold text-rose-600 shadow-xs hover:bg-rose-100"
-                >
-                  <MinusIcon aria-hidden="true" className=" size-5" />
-                </button>
+                    type="button"
+                    onClick={() => handleRemove(index)}
+                    className="rounded-sm ml-2 cursor-pointer transition-all duration-300 bg-rose-50 px-2 py-1 text-xs font-semibold text-rose-600 shadow-xs hover:bg-rose-100"
+                  >
+                    <MinusIcon aria-hidden="true" className="h-5 w-5" />
+                  </button>
                 )}
               </div>
             </div>

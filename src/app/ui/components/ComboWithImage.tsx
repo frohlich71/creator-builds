@@ -16,6 +16,7 @@ interface ComboWithImageProps<T> {
   onInputChange?: (query: string) => void;
   isLoading?: boolean;
   noResultsMessage?: string;
+  onItemHover?: (item: T | null, event?: React.MouseEvent) => void;
 }
 
 export default function ComboWithImage<T extends { id: string | number } = { id: string | number }>({
@@ -28,6 +29,7 @@ export default function ComboWithImage<T extends { id: string | number } = { id:
   onInputChange,
   isLoading = false,
   noResultsMessage = "Nenhum resultado encontrado",
+  onItemHover,
 }: ComboWithImageProps<T>) {
   const [query, setQuery] = useState('')
 
@@ -92,6 +94,8 @@ export default function ComboWithImage<T extends { id: string | number } = { id:
                   key={`${item.id}-${index}`}
                   value={item}
                   className="group relative cursor-default py-2 pr-9 pl-3 text-gray-900 select-none data-focus:bg-rose-600 data-focus:text-white data-focus:outline-hidden"
+                  onMouseEnter={(e) => onItemHover?.(item, e)}
+                  onMouseLeave={() => onItemHover?.(null)}
                 >
                   <div className="flex items-center">
                     <Image 

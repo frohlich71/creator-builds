@@ -5,7 +5,10 @@ export interface CreateSetupDTO {
   ownerName?: string;
   equipments: {
     name: string;
-    asin: string;
+    brand: string;
+    model: string;
+    icon: string;
+    link: string;
   }[];
 }
 
@@ -20,6 +23,28 @@ export function useSetupService() {
       
       if (res.status !== 201 && res.status !== 200) {
         throw new Error('Failed to create setup');
+      }
+
+      return res.data
+    },
+
+    updateSetup: async (setupId: string, setupData: CreateSetupDTO) => {
+      setupData.ownerName = getSession().user?.name ?? '';
+
+      const res = await api!.put(`/setup/${setupId}`, setupData)
+      
+      if (res.status !== 200) {
+        throw new Error('Failed to update setup');
+      }
+
+      return res.data
+    },
+
+    getSetupById: async (setupId: string) => {
+      const res = await api!.get(`/setup/${setupId}`)
+      
+      if (res.status !== 200) {
+        throw new Error('Failed to get setup');
       }
 
       return res.data

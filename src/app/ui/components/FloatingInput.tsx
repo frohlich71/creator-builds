@@ -15,17 +15,11 @@ export default function FloatingInput({ label, id, register, type, ...rest }: Fl
     <div className="relative">
       <input
         {...register}
-        onInput={e => {
-          if (register && register.onChange) {
-            register.onChange(e);
-          }
-         
-        }}
-        {...rest}
         id={id}
         type={type || 'text'}
         placeholder=" "
         className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-rose-600 peer"
+        {...rest}
       />
       <label
         htmlFor={id}
