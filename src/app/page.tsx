@@ -1,6 +1,5 @@
 'use client'
 
-import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import { useUserSearch } from "./hooks/useUserSearch";
 import Link from "next/link";
@@ -51,17 +50,6 @@ export default function Home() {
             height={44}
             className="h-11 w-auto"
           />
-          <div className="mt-24 sm:mt-32 lg:mt-16">
-            <a href="#" className="inline-flex space-x-6">
-              <span className="rounded-full bg-rose-600/10 px-3 py-1 text-sm/6 font-semibold text-rose-600 ring-1 ring-rose-600/10 ring-inset">
-                What is new
-              </span>
-              <span className="inline-flex items-center space-x-2 text-sm/6 font-medium text-gray-600">
-                <span>Just shipped v1.0</span>
-                <ChevronRightIcon aria-hidden="true" className="size-5 text-gray-400" />
-              </span>
-            </a>
-          </div>
           <h1 className="mt-10 text-5xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-7xl">
             The gear behind your favorite creators
           </h1>
@@ -80,6 +68,7 @@ export default function Home() {
                 onInputChange={handleQueryChange}
                 isLoading={isSearchLoading}
                 noResultsMessage="No creators found"
+                hideChevron={true}
               />
             </div>
             

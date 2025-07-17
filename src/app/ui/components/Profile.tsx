@@ -1,7 +1,7 @@
 'use client'
 
 import normalizeUrl from "@/app/utils/normalizeUrl";
-import { CheckIcon } from "@heroicons/react/20/solid";
+import { CheckBadgeIcon } from "@heroicons/react/20/solid";
 import { ArrowTopRightOnSquareIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { User } from "next-auth";
 import Link from "next/link";
@@ -20,8 +20,8 @@ export default function Profile ({user, isOwner = false}: {user: User, isOwner?:
           height={104}
           className="size-26 rounded-full"
         />
-        <span className="absolute right-0 bottom-2 block size-4 rounded-full bg-blue-400 ring-2 ring-white group-hover:opacity-0 transition-opacity duration-300"> 
-          <CheckIcon className="size-3 ml-0.5 mt-0.5 text-white" />
+        <span className="absolute right-0 bottom-2 group-hover:opacity-0 transition-opacity duration-300"> 
+          <CheckBadgeIcon className="size-5 text-blue-500" />
         </span>
         {isOwner && (
           <Link 
@@ -42,20 +42,20 @@ export default function Profile ({user, isOwner = false}: {user: User, isOwner?:
         </div>
       )}
       {user.website && (
-        <Link href={normalizeUrl(user.website)} className="group inline-flex items-center gap-x-2 text-sm text-red-900 transition-all duration-300 hover:text-red-600 hover:underline">
-          <i className="group-hover:text-red-600">{user.website}</i>
-          <ArrowTopRightOnSquareIcon className="size-4 group-hover:text-red-600 group-hover:underline" />
+        <Link href={normalizeUrl(user.website)} className="group inline-flex items-center gap-x-2 text-sm text-blue-500 transition-all duration-300 hover:text-blue-900 hover:underline">
+          <i className="group-hover:text-blue-900">{user.website}</i>
+          <ArrowTopRightOnSquareIcon className="size-4 group-hover:text-blue-900 group-hover:underline" />
         </Link>
       )}
 
-      {(user.x || user.instagram || user.youtube) && (
+      {(user.x || user.instagram || user.youtube || user.tiktok || user.snapchat || user.facebook || user.linkedin || user.pinterest || user.twitch) && (
         <div className="mt-6 w-full max-w-xs text-left">
-          <p className="text-md font-bold text-black mb-1">Redes sociais</p>
+          <p className="text-md font-bold text-black mb-1">Social media</p>
           <ul className="space-y-1">
             {user.x && (
               <li>
               <SocialIcon style={{height: 20, width: 20}}  url={normalizeUrl(user.x)} target="_blank"  />
-              <a href={normalizeUrl(user.x)} target="_blank" className="text-red-500 hover:text-red-900 hover:underline text-sm transition-all duration-300">
+              <a href={normalizeUrl(user.x)} target="_blank" className="text-blue-500 ml-2 hover:text-blue-900 hover:underline text-sm transition-all duration-300">
                 X
               </a>
             </li>
@@ -63,7 +63,7 @@ export default function Profile ({user, isOwner = false}: {user: User, isOwner?:
             {user.instagram && (
               <li>
                 <SocialIcon style={{height: 20, width: 20}}  url={normalizeUrl(user.instagram)} target="_blank"  />
-                <a href={normalizeUrl(user.instagram)} target="_blank" className="text-red-500 ml-2 hover:text-red-900 hover:underline text-sm transition-all duration-300">
+                <a href={normalizeUrl(user.instagram)} target="_blank" className="text-blue-500 ml-2 hover:text-blue-900 hover:underline text-sm transition-all duration-300">
                   Instagram
                 </a>
               </li>
@@ -72,8 +72,62 @@ export default function Profile ({user, isOwner = false}: {user: User, isOwner?:
             {user.youtube && (
               <li>
                 <SocialIcon style={{height: 20, width: 20}}  url={normalizeUrl(user.youtube)} target="_blank"  />
-                <a href={normalizeUrl(user.youtube)} target="_blank" className="text-red-500 hover:text-red-900 hover:underline text-sm transition-all duration-300">
+                <a href={normalizeUrl(user.youtube)} target="_blank" className="text-blue-500 ml-2 hover:text-blue-900 hover:underline text-sm transition-all duration-300">
                   Youtube
+                </a>
+              </li>
+            )}
+
+            {user.tiktok && (
+              <li>
+                <SocialIcon style={{height: 20, width: 20}}  url={normalizeUrl(user.tiktok)} target="_blank"  />
+                <a href={normalizeUrl(user.tiktok)} target="_blank" className="text-blue-500 ml-2 hover:text-blue-900 hover:underline text-sm transition-all duration-300">
+                  TikTok
+                </a>
+              </li>
+            )}
+
+            {user.snapchat && (
+              <li>
+                <SocialIcon style={{height: 20, width: 20}}  url={normalizeUrl(user.snapchat)} target="_blank"  />
+                <a href={normalizeUrl(user.snapchat)} target="_blank" className="text-blue-500 ml-2 hover:text-blue-900 hover:underline text-sm transition-all duration-300">
+                  Snapchat
+                </a>
+              </li>
+            )}
+
+            {user.facebook && (
+              <li>
+                <SocialIcon style={{height: 20, width: 20}}  url={normalizeUrl(user.facebook)} target="_blank"  />
+                <a href={normalizeUrl(user.facebook)} target="_blank" className="text-blue-500 ml-2 hover:text-blue-900 hover:underline text-sm transition-all duration-300">
+                  Facebook
+                </a>
+              </li>
+            )}
+
+            {user.linkedin && (
+              <li>
+                <SocialIcon style={{height: 20, width: 20}}  url={normalizeUrl(user.linkedin)} target="_blank"  />
+                <a href={normalizeUrl(user.linkedin)} target="_blank" className="text-blue-500 ml-2 hover:text-blue-900 hover:underline text-sm transition-all duration-300">
+                  LinkedIn
+                </a>
+              </li>
+            )}
+
+            {user.pinterest && (
+              <li>
+                <SocialIcon style={{height: 20, width: 20}}  url={normalizeUrl(user.pinterest)} target="_blank"  />
+                <a href={normalizeUrl(user.pinterest)} target="_blank" className="text-blue-500 ml-2 hover:text-blue-900 hover:underline text-sm transition-all duration-300">
+                  Pinterest
+                </a>
+              </li>
+            )}
+
+            {user.twitch && (
+              <li>
+                <SocialIcon style={{height: 20, width: 20}}  url={normalizeUrl(user.twitch)} target="_blank"  />
+                <a href={normalizeUrl(user.twitch)} target="_blank" className="text-blue-500 ml-2 hover:text-blue-900 hover:underline text-sm transition-all duration-300">
+                  Twitch
                 </a>
               </li>
             )}

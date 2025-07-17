@@ -47,3 +47,20 @@ export async function updateUserProfile(token: string, userId: string, data: Par
     throw new Error('Failed to update profile')
   }
 }
+
+export async function updatePassword(token: string, currentPassword: string, newPassword: string) {
+  try {
+    const api = createServerApi(token)
+    const res = await api.post('/user/update-password', {
+      currentPassword,
+      newPassword
+    })
+    return res.data
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'response' in error) {
+      const axiosError = error as { response: { status: number; data?: { message?: string } } }
+      throw new Error(axiosError.response.data?.message || 'Failed to update password')
+    }
+    throw new Error('Failed to update password')
+  }
+}

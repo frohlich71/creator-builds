@@ -1,4 +1,5 @@
 import { User } from "next-auth"
+import { validateSocialMediaUrl, getSocialMediaErrorMessage } from "./socialMediaValidation"
 
 /**
  * Valida se o perfil que está sendo acessado pertence ao usuário logado
@@ -125,23 +126,65 @@ export const registerValidation = {
   },
   
   instagram: {
-    pattern: {
-      value: /^(https?:\/\/)?(www\.)?instagram\.com\/[a-zA-Z0-9_.]+\/?$/,
-      message: 'Please enter a valid Instagram URL'
+    validate: (value?: string) => {
+      if (!value || value.trim() === '') return true
+      return validateSocialMediaUrl('instagram', value) || getSocialMediaErrorMessage('instagram')
     }
   },
   
   youtube: {
-    pattern: {
-      value: /^(https?:\/\/)?(www\.)?youtube\.com\/(channel\/|c\/|user\/|@)?[a-zA-Z0-9_-]+\/?$/,
-      message: 'Please enter a valid YouTube URL'
+    validate: (value?: string) => {
+      if (!value || value.trim() === '') return true
+      return validateSocialMediaUrl('youtube', value) || getSocialMediaErrorMessage('youtube')
     }
   },
   
   x: {
-    pattern: {
-      value: /^(https?:\/\/)?(www\.)?(twitter\.com|x\.com)\/[a-zA-Z0-9_]+\/?$/,
-      message: 'Please enter a valid X (Twitter) URL'
+    validate: (value?: string) => {
+      if (!value || value.trim() === '') return true
+      return validateSocialMediaUrl('x', value) || getSocialMediaErrorMessage('x')
+    }
+  },
+  
+  tiktok: {
+    validate: (value?: string) => {
+      if (!value || value.trim() === '') return true
+      return validateSocialMediaUrl('tiktok', value) || getSocialMediaErrorMessage('tiktok')
+    }
+  },
+  
+  snapchat: {
+    validate: (value?: string) => {
+      if (!value || value.trim() === '') return true
+      return validateSocialMediaUrl('snapchat', value) || getSocialMediaErrorMessage('snapchat')
+    }
+  },
+  
+  facebook: {
+    validate: (value?: string) => {
+      if (!value || value.trim() === '') return true
+      return validateSocialMediaUrl('facebook', value) || getSocialMediaErrorMessage('facebook')
+    }
+  },
+  
+  linkedin: {
+    validate: (value?: string) => {
+      if (!value || value.trim() === '') return true
+      return validateSocialMediaUrl('linkedin', value) || getSocialMediaErrorMessage('linkedin')
+    }
+  },
+  
+  pinterest: {
+    validate: (value?: string) => {
+      if (!value || value.trim() === '') return true
+      return validateSocialMediaUrl('pinterest', value) || getSocialMediaErrorMessage('pinterest')
+    }
+  },
+  
+  twitch: {
+    validate: (value?: string) => {
+      if (!value || value.trim() === '') return true
+      return validateSocialMediaUrl('twitch', value) || getSocialMediaErrorMessage('twitch')
     }
   }
 }

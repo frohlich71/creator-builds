@@ -86,7 +86,7 @@ export default function AddEquipments({control, register, setValue, errors}: {
               <div className="col-span-12 sm:col-span-4">
                 <FloatingInput
                   id={`equipments.${index}.name`}
-                  label="Equipment Name (Nickname)"
+                  label="Equipment Name *"
                   register={register(`equipments.${index}.name`, {
                     required: "Equipment name is required",
                     minLength: { value: 1, message: "Equipment name cannot be empty" }
@@ -100,7 +100,7 @@ export default function AddEquipments({control, register, setValue, errors}: {
               <div className="col-span-12 sm:col-span-4">
                 <FloatingInput
                   id={`equipments.${index}.brand`}
-                  label="Brand"
+                  label="Brand *"
                   register={register(`equipments.${index}.brand`, {
                     required: "Brand is required",
                     minLength: { value: 1, message: "Brand cannot be empty" }
@@ -115,10 +115,7 @@ export default function AddEquipments({control, register, setValue, errors}: {
                 <FloatingInput
                   id={`equipments.${index}.model`}
                   label="Model"
-                  register={register(`equipments.${index}.model`, {
-                    required: "Model is required",
-                    minLength: { value: 1, message: "Model cannot be empty" }
-                  })}
+                  register={register(`equipments.${index}.model`)}
                 />
                 {errors.equipments?.[index]?.model && (
                   <p className="mt-1 text-sm text-red-600">{errors.equipments[index]?.model?.message}</p>
@@ -170,8 +167,9 @@ export default function AddEquipments({control, register, setValue, errors}: {
                         message: "Please enter a valid URL starting with http:// or https://"
                       }
                     })}
+                    style={{ paddingRight: '2.5rem' }}
                   />
-                  <LinkIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <LinkIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
                 </div>
                 {errors.equipments?.[index]?.link && (
                   <p className="mt-1 text-sm text-red-600">{errors.equipments[index]?.link?.message}</p>

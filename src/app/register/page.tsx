@@ -134,7 +134,7 @@ export default function RegisterPage() {
                 <div className="sm:col-span-4">
                   <FloatingInput 
                     id='name' 
-                    label='Name' 
+                    label='Username' 
                     register={register('name', registerValidation.name)} 
                   />
                   {getFieldError(errors, 'name') && (
@@ -145,7 +145,7 @@ export default function RegisterPage() {
                 <div className="sm:col-span-4">
                   <FloatingInput 
                     id='nickname' 
-                    label='Nickname' 
+                    label='Name' 
                     register={register('nickname', registerValidation.nickname)} 
                   />
                   {getFieldError(errors, 'nickname') && (

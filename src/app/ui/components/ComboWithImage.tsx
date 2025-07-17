@@ -17,6 +17,7 @@ interface ComboWithImageProps<T> {
   isLoading?: boolean;
   noResultsMessage?: string;
   onItemHover?: (item: T | null, event?: React.MouseEvent) => void;
+  hideChevron?: boolean;
 }
 
 export default function ComboWithImage<T extends { id: string | number } = { id: string | number }>({
@@ -30,6 +31,7 @@ export default function ComboWithImage<T extends { id: string | number } = { id:
   isLoading = false,
   noResultsMessage = "No results found",
   onItemHover,
+  hideChevron = false,
 }: ComboWithImageProps<T>) {
   const [query, setQuery] = useState('')
 
@@ -62,7 +64,7 @@ export default function ComboWithImage<T extends { id: string | number } = { id:
         <div className="relative">
           <ComboboxInput
             className={
-              `block w-full rounded-lg bg-white px-2.5 pr-8 pb-2 pt-4 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-transparent focus:outline-2 focus:-outline-offset-2 focus:outline-rose-600 sm:text-sm/6 peer`}
+              `block w-full rounded-lg bg-white px-2.5 ${hideChevron ? 'pr-3' : 'pr-8'} pb-2 pt-4 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-transparent focus:outline-2 focus:-outline-offset-2 focus:outline-rose-600 sm:text-sm/6 peer`}
             onChange={handleInputChange}
             onBlur={() => setQuery('')}
             displayValue={(item: T) => (item ? getLabel(item) : '')}
@@ -75,9 +77,11 @@ export default function ComboWithImage<T extends { id: string | number } = { id:
           >
             {label}
           </label>
-          <ComboboxButton className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-hidden">
-            <ChevronUpDownIcon className="size-5 text-gray-400" aria-hidden="true" />
-          </ComboboxButton>
+          {!hideChevron && (
+            <ComboboxButton className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-hidden">
+              <ChevronUpDownIcon className="size-5 text-gray-400" aria-hidden="true" />
+            </ComboboxButton>
+          )}
         </div>
         {(filteredOptions.length > 0 || isLoading || query) && (
           <ComboboxOptions className="absolute z-50 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-hidden sm:text-sm">

@@ -21,6 +21,12 @@ declare module "next-auth" {
     website?: string
     profileImage?: string
     x?: string
+    tiktok?: string
+    facebook?: string
+    linkedin?: string
+    twitch?: string
+    snapchat?: string
+    pinterest?: string
     youtube?: string
     instagram?: string
   }
