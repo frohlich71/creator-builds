@@ -25,6 +25,8 @@ declare module "next-auth" {
     facebook?: string
     linkedin?: string
     twitch?: string
+    isEmailVerified?: boolean
+    isVerified?: boolean
     snapchat?: string
     pinterest?: string
     youtube?: string

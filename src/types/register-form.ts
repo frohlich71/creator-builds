@@ -8,5 +8,11 @@ export type RegisterForm = {
   x: string
   youtube: string
   telephone: string
+  tiktok: string
+  snapchat: string
+  facebook: string
+  linkedin: string
+  pinterest: string
+  twitch: string
   profileImage?: string
 }

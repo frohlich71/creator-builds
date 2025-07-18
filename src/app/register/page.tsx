@@ -10,6 +10,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { useState } from 'react'
 import FloatingInput from '../ui/components/FloatingInput'
+import FloatingPhoneInput from '../ui/components/FloatingPhoneInput'
 import ImageUpload from '../ui/components/ImageUpload'
 import { uploadImageToCloudinary } from '../utils/cloudinaryUpload'
 import { registerValidation, getFieldError, hasFormErrors } from '../utils/profileValidation'
@@ -166,15 +167,13 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="sm:col-span-4">
-                  <FloatingInput 
+                  <FloatingPhoneInput 
                     id='telephone'  
                     label='Telephone' 
                     register={register('telephone', registerValidation.telephone)} 
-                    type="tel" 
+                    error={getFieldError(errors, 'telephone')}
+                    required={false}
                   />
-                  {getFieldError(errors, 'telephone') && (
-                    <p className="mt-2 text-sm text-red-600">{getFieldError(errors, 'telephone')}</p>
-                  )}
                 </div>
 
                 <div className="sm:col-span-4">
@@ -194,7 +193,6 @@ export default function RegisterPage() {
                     id='website' 
                     label='Website' 
                     register={register('website', registerValidation.website)} 
-                    placeholder="www.example.com" 
                     prefix="https://" 
                   />
                   {getFieldError(errors, 'website') && (
@@ -202,7 +200,7 @@ export default function RegisterPage() {
                   )}
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-3">
                   <label htmlFor="instagram" className="block text-sm/6 font-medium text-gray-900">
                     Instagram
                   </label>
@@ -224,7 +222,7 @@ export default function RegisterPage() {
                   )}
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-3">
                   <label htmlFor="youtube" className="block text-sm/6 font-medium text-gray-900">
                     Youtube
                   </label>
@@ -246,7 +244,7 @@ export default function RegisterPage() {
                   )}
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-3">
                   <label htmlFor="x" className="block text-sm/6 font-medium text-gray-900">
                     X
                   </label>
@@ -267,6 +265,139 @@ export default function RegisterPage() {
                     <p className="mt-2 text-sm text-red-600">{getFieldError(errors, 'x')}</p>
                   )}
                 </div>
+
+                <div className="sm:col-span-3">
+                  <label htmlFor="tiktok" className="block text-sm/6 font-medium text-gray-900">
+                    TikTok
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-rose-600">
+                      <div tabIndex={-1} className="flex shrink-0 mr-2 items-center rounded-l-md bg-white px-3 text-base text-gray-500  outline-gray-300 sm:text-sm/6">
+                        <SocialIcon tabIndex={-1} style={{ height: 27, width: 27 }} url='https://www.tiktok.com' />
+                      </div>
+                      <input
+                        {...register('tiktok', registerValidation.tiktok)}
+                        type="text"
+                        placeholder="www.tiktok.com/@yourprofile"
+                        className="-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-rose-600 sm:text-sm/6"
+                      />
+                    </div>
+                  </div>
+                  {getFieldError(errors, 'tiktok') && (
+                    <p className="mt-2 text-sm text-red-600">{getFieldError(errors, 'tiktok')}</p>
+                  )}
+                </div>
+
+                <div className="sm:col-span-3">
+                  <label htmlFor="snapchat" className="block text-sm/6 font-medium text-gray-900">
+                    Snapchat
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-rose-600">
+                      <div tabIndex={-1} className="flex shrink-0 mr-2 items-center rounded-l-md bg-white px-3 text-base text-gray-500  outline-gray-300 sm:text-sm/6">
+                        <SocialIcon tabIndex={-1} style={{ height: 27, width: 27 }} url='https://www.snapchat.com' />
+                      </div>
+                      <input
+                        {...register('snapchat', registerValidation.snapchat)}
+                        type="text"
+                        placeholder="www.snapchat.com/add/yourprofile"
+                        className="-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-rose-600 sm:text-sm/6"
+                      />
+                    </div>
+                  </div>
+                  {getFieldError(errors, 'snapchat') && (
+                    <p className="mt-2 text-sm text-red-600">{getFieldError(errors, 'snapchat')}</p>
+                  )}
+                </div>
+
+                <div className="sm:col-span-3">
+                  <label htmlFor="facebook" className="block text-sm/6 font-medium text-gray-900">
+                    Facebook
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-rose-600">
+                      <div tabIndex={-1} className="flex shrink-0 mr-2 items-center rounded-l-md bg-white px-3 text-base text-gray-500  outline-gray-300 sm:text-sm/6">
+                        <SocialIcon tabIndex={-1} style={{ height: 27, width: 27 }} url='https://www.facebook.com' />
+                      </div>
+                      <input
+                        {...register('facebook', registerValidation.facebook)}
+                        type="text"
+                        placeholder="www.facebook.com/yourprofile"
+                        className="-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-rose-600 sm:text-sm/6"
+                      />
+                    </div>
+                  </div>
+                  {getFieldError(errors, 'facebook') && (
+                    <p className="mt-2 text-sm text-red-600">{getFieldError(errors, 'facebook')}</p>
+                  )}
+                </div>
+
+                <div className="sm:col-span-3">
+                  <label htmlFor="linkedin" className="block text-sm/6 font-medium text-gray-900">
+                    LinkedIn
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-rose-600">
+                      <div tabIndex={-1} className="flex shrink-0 mr-2 items-center rounded-l-md bg-white px-3 text-base text-gray-500  outline-gray-300 sm:text-sm/6">
+                        <SocialIcon tabIndex={-1} style={{ height: 27, width: 27 }} url='https://www.linkedin.com' />
+                      </div>
+                      <input
+                        {...register('linkedin', registerValidation.linkedin)}
+                        type="text"
+                        placeholder="www.linkedin.com/in/yourprofile"
+                        className="-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-rose-600 sm:text-sm/6"
+                      />
+                    </div>
+                  </div>
+                  {getFieldError(errors, 'linkedin') && (
+                    <p className="mt-2 text-sm text-red-600">{getFieldError(errors, 'linkedin')}</p>
+                  )}
+                </div>
+
+                <div className="sm:col-span-3">
+                  <label htmlFor="pinterest" className="block text-sm/6 font-medium text-gray-900">
+                    Pinterest
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-rose-600">
+                      <div tabIndex={-1} className="flex shrink-0 mr-2 items-center rounded-l-md bg-white px-3 text-base text-gray-500  outline-gray-300 sm:text-sm/6">
+                        <SocialIcon tabIndex={-1} style={{ height: 27, width: 27 }} url='https://www.pinterest.com' />
+                      </div>
+                      <input
+                        {...register('pinterest', registerValidation.pinterest)}
+                        type="text"
+                        placeholder="www.pinterest.com/yourprofile"
+                        className="-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-rose-600 sm:text-sm/6"
+                      />
+                    </div>
+                  </div>
+                  {getFieldError(errors, 'pinterest') && (
+                    <p className="mt-2 text-sm text-red-600">{getFieldError(errors, 'pinterest')}</p>
+                  )}
+                </div>
+
+                <div className="sm:col-span-3">
+                  <label htmlFor="twitch" className="block text-sm/6 font-medium text-gray-900">
+                    Twitch
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-rose-600">
+                      <div tabIndex={-1} className="flex shrink-0 mr-2 items-center rounded-l-md bg-white px-3 text-base text-gray-500  outline-gray-300 sm:text-sm/6">
+                        <SocialIcon tabIndex={-1} style={{ height: 27, width: 27 }} url='https://www.twitch.tv' />
+                      </div>
+                      <input
+                        {...register('twitch', registerValidation.twitch)}
+                        type="text"
+                        placeholder="www.twitch.tv/yourprofile"
+                        className="-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-rose-600 sm:text-sm/6"
+                      />
+                    </div>
+                  </div>
+                  {getFieldError(errors, 'twitch') && (
+                    <p className="mt-2 text-sm text-red-600">{getFieldError(errors, 'twitch')}</p>
+                  )}
+                </div>
+
                 <ImageUpload
                   onImageSelect={handleImageSelect}
                   currentImage={profileImage}

@@ -2,7 +2,7 @@
 
 import normalizeUrl from "@/app/utils/normalizeUrl";
 import { CheckBadgeIcon } from "@heroicons/react/20/solid";
-import { ArrowTopRightOnSquareIcon, PencilIcon } from "@heroicons/react/24/outline";
+import { ArrowTopRightOnSquareIcon, PencilIcon, ShieldCheckIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { User } from "next-auth";
 import Link from "next/link";
 import { SocialIcon } from "react-social-icons";
@@ -20,9 +20,11 @@ export default function Profile ({user, isOwner = false}: {user: User, isOwner?:
           height={104}
           className="size-26 rounded-full"
         />
-        <span className="absolute right-0 bottom-2 group-hover:opacity-0 transition-opacity duration-300"> 
-          <CheckBadgeIcon className="size-5 text-blue-500" />
-        </span>
+        {user.isVerified && (
+          <span className="absolute right-0 bottom-2 group-hover:opacity-0 transition-opacity duration-300"> 
+            <CheckBadgeIcon className="size-5 text-blue-500" />
+          </span>
+        )}
         {isOwner && (
           <Link 
             href="/edit-profile"
@@ -34,6 +36,22 @@ export default function Profile ({user, isOwner = false}: {user: User, isOwner?:
       </span>
       <p className="mt-4 text-lg font-semibold">{user.nickname}</p>
       <p className="text-sm text-gray-500">@{user.name}</p>
+      
+      {/* Email verification badge */}
+      <div className="mt-2">
+        {user.isEmailVerified ? (
+          <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+            <ShieldCheckIcon className="size-3 mr-1" />
+            Email Verified
+          </span>
+        ) : (
+          <span className="inline-flex items-center rounded-full bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700 ring-1 ring-inset ring-yellow-600/20">
+            <ExclamationTriangleIcon className="size-3 mr-1" />
+            Email Not Verified
+          </span>
+        )}
+      </div>
+      
       {isOwner && (
         <div className="mt-2">
           <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
