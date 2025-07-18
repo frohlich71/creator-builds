@@ -77,18 +77,12 @@ export const registerValidation = {
   
   nickname: {
     required: 'Nickname is required',
-    minLength: {
-      value: 3,
-      message: 'Nickname must be at least 3 characters long'
-    },
+  
     maxLength: {
       value: 30,
       message: 'Nickname must be less than 30 characters'
-    },
-    pattern: {
-      value: /^[a-zA-Z0-9_]+$/,
-      message: 'Nickname can only contain letters, numbers, and underscores'
     }
+
   },
   
   email: {

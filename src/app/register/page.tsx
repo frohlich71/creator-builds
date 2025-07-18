@@ -134,6 +134,18 @@ export default function RegisterPage() {
               <div className="p-6 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-4">
                   <FloatingInput 
+                    id='nickname' 
+                    label='Name' 
+                    register={register('nickname', registerValidation.nickname)} 
+                  />
+                  {getFieldError(errors, 'nickname') && (
+                    <p className="mt-2 text-sm text-red-600">{getFieldError(errors, 'nickname')}</p>
+                  )}
+                </div>
+
+
+                <div className="sm:col-span-4">
+                  <FloatingInput 
                     id='name' 
                     label='Username' 
                     register={register('name', registerValidation.name)} 
@@ -143,16 +155,7 @@ export default function RegisterPage() {
                   )}
                 </div>
 
-                <div className="sm:col-span-4">
-                  <FloatingInput 
-                    id='nickname' 
-                    label='Name' 
-                    register={register('nickname', registerValidation.nickname)} 
-                  />
-                  {getFieldError(errors, 'nickname') && (
-                    <p className="mt-2 text-sm text-red-600">{getFieldError(errors, 'nickname')}</p>
-                  )}
-                </div>
+               
 
                 <div className="sm:col-span-4">
                   <FloatingInput 
