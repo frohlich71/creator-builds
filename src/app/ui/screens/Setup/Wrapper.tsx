@@ -138,7 +138,7 @@ export default function SetupWrapper({setups, isOwner = false}: {setups: Setup[]
         {(setups.length > 0 && isOwner && !editingSetup) && (
           <div className="flex justify-end mt-4">
             <Button variant='add' onClick={() => setShowForm(true)}>
-              Add new setup
+              Add setup
               <svg className=" h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
               </svg>

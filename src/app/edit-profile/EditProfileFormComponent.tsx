@@ -3,6 +3,7 @@
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import FloatingInput from '@/app/ui/components/FloatingInput'
+import FloatingPhoneInput from '@/app/ui/components/FloatingPhoneInput'
 import ImageUpload from '@/app/ui/components/ImageUpload'
 import { registerValidation, getFieldError } from '@/app/utils/profileValidation'
 import { updateUserProfile } from '@/app/service/profile'
@@ -209,16 +210,11 @@ export default function EditProfileFormComponent({ user, accessToken }: EditProf
             </div>
 
             <div className="sm:col-span-4">
-              <FloatingInput 
-                id='telephone'  
-                label='Telephone (Optional)' 
-                register={register('telephone', registerValidation.telephone)} 
-                type="tel"
-                onPaste={() => {
-                  setTimeout(() => {
-                    trigger('telephone')
-                  }, 0)
-                }}
+              <FloatingPhoneInput
+                id='telephone'
+                label='Telephone'
+                register={register('telephone', registerValidation.telephone)}
+                defaultValue={user?.telephone || ''}
               />
               {getFieldError(errors, 'telephone') && (
                 <p className="mt-2 text-sm text-red-600">{getFieldError(errors, 'telephone')}</p>
@@ -228,7 +224,7 @@ export default function EditProfileFormComponent({ user, accessToken }: EditProf
             <div className="sm:col-span-4">
               <FloatingInput 
                 id='website' 
-                label='Website (Optional)' 
+                label='Website' 
                 register={register('website', registerValidation.website)}
                 placeholder="www.example.com"
                 prefix="https://"
@@ -245,7 +241,7 @@ export default function EditProfileFormComponent({ user, accessToken }: EditProf
 
             {/* Social Media Section - 2 columns layout */}
             <div className="sm:col-span-6">
-              <h3 className="text-base font-semibold text-gray-900 mb-4">Social Media (Optional)</h3>
+              <h3 className="text-base font-semibold text-gray-900 mb-4">Social Media</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8">
                 <div>
                   <label htmlFor="instagram" className="block text-sm/6 font-medium text-gray-900">

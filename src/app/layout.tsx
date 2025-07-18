@@ -4,7 +4,7 @@ import Providers from './ui/providers/Providers'
 import Header from './ui/components/Header'
  
 export const metadata: Metadata = {
-  title: 'Creator builds',
+  title: 'Creator Builds',
   description: 'See the best creator builds',
   icons: {
     icon: '/favicon.ico',

@@ -17,6 +17,7 @@ interface FloatingPhoneInputProps {
   register: UseFormRegisterReturn
   error?: string
   required?: boolean
+  defaultValue?: string
 }
 
 // Lista de códigos de países com suas bandeiras e máscaras
@@ -67,13 +68,41 @@ export default function FloatingPhoneInput({
   label, 
   register, 
   error, 
-  required = false 
+  required = false,
+  defaultValue = '' 
 }: FloatingPhoneInputProps) {
   const [selectedCountry, setSelectedCountry] = useState<CountryCode>(countryCodes[0])
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [isFocused, setIsFocused] = useState(false)
+  const [isInitialized, setIsInitialized] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+
+  // Processar valor padrão ao inicializar
+  useEffect(() => {
+    if (defaultValue && !isInitialized) {
+      // Encontrar o país baseado no código
+      let detectedCountry = countryCodes[0] // Default para US
+      let phoneNumber = defaultValue
+      
+      // Tentar encontrar o país pelo código
+      for (const country of countryCodes) {
+        if (defaultValue.startsWith(country.code)) {
+          detectedCountry = country
+          phoneNumber = defaultValue.slice(country.code.length)
+          break
+        }
+      }
+      
+      setSelectedCountry(detectedCountry)
+      
+      // Aplicar máscara ao número
+      const maskedValue = applyMask(phoneNumber, detectedCountry.mask)
+      setInputValue(maskedValue)
+      
+      setIsInitialized(true)
+    }
+  }, [defaultValue, isInitialized])
 
   // Fechar dropdown quando clicar fora
   useEffect(() => {
@@ -185,7 +214,7 @@ export default function FloatingPhoneInput({
               htmlFor={id}
               className={`absolute left-3 transition-all duration-200 pointer-events-none ${
                 isActive
-                  ? 'text-xs text-rose-600 -top-2 bg-white px-1'
+                  ? `text-xs ${isFocused ? 'text-rose-600' : 'text-gray-500'} -top-2 bg-white px-1`
                   : 'text-base text-gray-500 top-2.5'
               }`}
             >

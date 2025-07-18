@@ -72,6 +72,15 @@ export default function DesktopRightSection({isAuthenticated, setLoginDrawerOpen
                       Profile
                     </a>
                   </MenuItem>
+
+                  <MenuItem key={'edit_profile_menu_item'}>
+                    <a
+                      href="/edit-profile"
+                      className="block cursor-pointer text-left px-4 py-2 text-sm transition-all duration-300 text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
+                    >
+                      Edit Profile
+                    </a>
+                  </MenuItem>
                   {/* <MenuItem key={'update_password_menu_item'}>
                     <a
                       href="/update-password"

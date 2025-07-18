@@ -129,6 +129,12 @@ export default function Header() {
                     >
                     Profile
                   </a>
+                  <a
+                    href="/edit-profile"
+                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
+                    >
+                    Edit Profile
+                  </a>
                   {/* <a
                     href="/update-password"
                     className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
