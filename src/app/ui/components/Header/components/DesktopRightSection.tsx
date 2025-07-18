@@ -35,7 +35,7 @@ export default function DesktopRightSection({isAuthenticated, setLoginDrawerOpen
                 options={users}
                 value={null}
                 onChange={handleUserSelect}
-                label="Search creators"
+                label="Search Creators"
                 getLabel={getUserLabel}
                 getImageUrl={getUserImage}
                 onInputChange={handleQueryChange}

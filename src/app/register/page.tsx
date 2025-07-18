@@ -172,7 +172,7 @@ export default function RegisterPage() {
                 <div className="sm:col-span-4">
                   <FloatingPhoneInput 
                     id='telephone'  
-                    label='Telephone' 
+                    label='Phone Number' 
                     register={register('telephone', registerValidation.telephone)} 
                     error={getFieldError(errors, 'telephone')}
                     required={false}
@@ -404,7 +404,7 @@ export default function RegisterPage() {
                 <ImageUpload
                   onImageSelect={handleImageSelect}
                   currentImage={profileImage}
-                  label="Profile Photo"
+                  label="Profile Picture"
                   size="lg"
                 />
               </div>

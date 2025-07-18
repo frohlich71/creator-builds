@@ -212,7 +212,7 @@ export default function EditProfileFormComponent({ user, accessToken }: EditProf
             <div className="sm:col-span-4">
               <FloatingPhoneInput
                 id='telephone'
-                label='Telephone'
+                label='Phone Number'
                 register={register('telephone', registerValidation.telephone)}
                 defaultValue={user?.telephone || ''}
               />
@@ -446,7 +446,7 @@ export default function EditProfileFormComponent({ user, accessToken }: EditProf
             <ImageUpload
               onImageSelect={handleImageSelect}
               currentImage={profileImage}
-              label="Profile Photo"
+              label="Profile Picture"
               size="lg"
             />
           </div>

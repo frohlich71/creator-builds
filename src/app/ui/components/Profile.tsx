@@ -68,7 +68,7 @@ export default function Profile ({user, isOwner = false}: {user: User, isOwner?:
 
       {(user.x || user.instagram || user.youtube || user.tiktok || user.snapchat || user.facebook || user.linkedin || user.pinterest || user.twitch) && (
         <div className="mt-6 w-full max-w-xs text-left">
-          <p className="text-md font-bold text-black mb-1">Social media</p>
+          <p className="text-md font-bold text-black mb-1">Social Media</p>
           <ul className="space-y-1">
             {user.x && (
               <li>

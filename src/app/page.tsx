@@ -25,7 +25,7 @@ export default function Home() {
     <div className="relative isolate overflow-hidden bg-white">
       <svg
         aria-hidden="true"
-        className="absolute inset-0 -z-10 size-full mask-[radial-gradient(100%_100%_at_top_right,white,transparent)] stroke-gray-200"
+        className="absolute inset-0 -z-10 size-full hidden sm:block mask-[radial-gradient(100%_100%_at_top_right,white,transparent)] stroke-gray-200"
       >
         <defs>
           <pattern
@@ -62,7 +62,7 @@ export default function Home() {
                 options={users}
                 value={null}
                 onChange={handleUserSelect}
-                label="Search creators"
+                label="Search Creators"
                 getLabel={getUserLabel}
                 getImageUrl={getUserImage}
                 onInputChange={handleQueryChange}
