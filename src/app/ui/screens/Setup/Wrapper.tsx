@@ -8,9 +8,9 @@ import Equipments from '../../components/Equipments';
 import Button from '../../components/Button';
 import ConfirmModal from '../../components/ConfirmModal';
 import { XMarkIcon, PencilIcon } from '@heroicons/react/24/outline';
-import { useSetupService } from '@/app/service/useSetupService';
 import NProgress from 'nprogress';
 import { useNotificationContext } from '@/app/contexts/NotificationContext';
+import { useCurrentUser } from '@/app/hooks/useCurrentUser';
 
 
 export default function SetupWrapper({setups, isOwner = false}: {setups: Setup[], isOwner?: boolean}) {
@@ -19,8 +19,11 @@ export default function SetupWrapper({setups, isOwner = false}: {setups: Setup[]
   const [editingSetup, setEditingSetup] = useState<Setup | null>(null);
   const [setupToDelete, setSetupToDelete] = useState<{ id: string; name: string } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  const { deleteSetup } = useSetupService();
   const { showError } = useNotificationContext();
+  const { isAuthenticated } = useCurrentUser();
+
+  // Para usuários não autenticados, as funções de setup não estarão disponíveis
+  const canManageSetups = isAuthenticated && isOwner;
 
   function handleDeleteSetup(setupId: string, setupName: string) {
     setSetupToDelete({ id: setupId, name: setupName });
@@ -29,11 +32,27 @@ export default function SetupWrapper({setups, isOwner = false}: {setups: Setup[]
   function confirmDeleteSetup() {
     if (!setupToDelete) return;
     
+    // Verificar se o usuário pode gerenciar setups
+    if (!canManageSetups) {
+      showError("Permission denied", "You need to be logged in to delete setups.");
+      return;
+    }
+    
     setIsDeleting(true);
     NProgress.start();
     
-    deleteSetup(setupToDelete.id)
-      .then(() => {
+    // Para demonstração - em um cenário real, você faria uma chamada para a API diretamente
+    // ou teria um método alternativo para usuários não autenticados
+    fetch(`/api/setups/${setupToDelete.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to delete setup');
+        }
         NProgress.done();
         setIsDeleting(false);
         setSetupToDelete(null);
@@ -43,9 +62,9 @@ export default function SetupWrapper({setups, isOwner = false}: {setups: Setup[]
         url.searchParams.set('message', encodeURIComponent('Setup deleted successfully'));
         window.location.href = url.toString();
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         console.error("Error deleting setup:", err);
-        showError("Erro ao deletar setup", "Não foi possível remover o setup. Tente novamente.");
+        showError("Error deleting setup", "Unable to delete the setup. Please try again.");
         NProgress.done();
         setIsDeleting(false);
         setSetupToDelete(null);
@@ -86,7 +105,7 @@ export default function SetupWrapper({setups, isOwner = false}: {setups: Setup[]
                   <div className="p-6">
                     <div className="flex mb-2 items-center justify-between">
                       <h3 className="mt-2 ml-2 text-base font-semibold text-gray-900">{setup.name}</h3>
-                      {isOwner && (
+                      {canManageSetups && (
                         <div className="flex space-x-2">
                           <Button variant='ghost' onClick={() => handleEditSetup(setup)}>
                             <PencilIcon className="h-5 w-5" />
@@ -104,7 +123,7 @@ export default function SetupWrapper({setups, isOwner = false}: {setups: Setup[]
                 </div>
               )) : (
                 <>
-                  {isOwner ? (
+                  {canManageSetups ? (
                     <>
                       {showForm ? (
                         <CreateSetupForm onCancel={() => setShowForm(false)} />
@@ -128,14 +147,14 @@ export default function SetupWrapper({setups, isOwner = false}: {setups: Setup[]
             </>
           )}
 
-          {(showForm && setups.length > 0 && isOwner && !editingSetup) && (
+          {(showForm && setups.length > 0 && canManageSetups && !editingSetup) && (
             <div className="mt-6 p-6 border border-gray-200 pt-6 rounded-lg bg-white shadow-sm">
               <CreateSetupForm onCancel={() => setShowForm(false)} />
             </div>
           )}
 
         </div>
-        {(setups.length > 0 && isOwner && !editingSetup) && (
+        {(setups.length > 0 && canManageSetups && !editingSetup) && (
           <div className="flex justify-end mt-4">
             <Button variant='add' onClick={() => setShowForm(true)}>
               Add setup

@@ -2,7 +2,6 @@ import { getProfileByName } from '@/app/service/profile'
 import { getServerSession, User } from 'next-auth'
 import { authOptions } from '@/app/lib/auth'
 import Profile from '@/app/ui/components/Profile'
-import { redirect } from 'next/navigation'
 import SetupWrapper from '@/app/ui/screens/Setup/Wrapper'
 import { validateProfileOwnership } from '@/app/utils/profileValidation'
 
@@ -10,15 +9,29 @@ import { validateProfileOwnership } from '@/app/utils/profileValidation'
 export default async function Setup({ params }: { params: Promise<{ id: string }> }) {
 
   const session = await getServerSession(authOptions)
-
-  if (!session || !session.accessToken) {
-    redirect('/auth')
-  }
-
   const {id} = await params
-  const profileUser: User = await getProfileByName(session?.accessToken ?? '', id)
   
-  const isOwner = validateProfileOwnership(session.user, profileUser, id)
+  let profileUser: User
+  let isOwner = false
+  
+  try {
+    if (session?.accessToken) {
+      profileUser = await getProfileByName(session.accessToken, id)
+      isOwner = validateProfileOwnership(session.user, profileUser, id)
+    } else {
+      profileUser = await getProfileByName('', id)
+    }
+  } catch (error) {
+    console.error('Error fetching profile:', error)
+    return (
+      <div className="mx-auto max-w-3xl lg:mt-38 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+        <div className="text-center py-12">
+          <h2 className="text-2xl font-semibold text-gray-900">Profile not found</h2>
+          <p className="mt-2 text-gray-600">The profile you&apos;re looking for doesn&apos;t exist or is not available.</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
           <div className="mx-auto max-w-3xl lg:mt-38 px-4 sm:px-6 lg:max-w-7xl lg:px-8">

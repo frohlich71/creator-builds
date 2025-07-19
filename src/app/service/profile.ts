@@ -6,9 +6,17 @@ import { createServerApi } from "../lib/serverApi"
 
 export async function getProfileByName(token: string, name: string) {
   if (token === '') {
-    return null
+    try {
+      const api = createServerApi()
+      const res = await api.get(`/user/name/${name}`)
+      return res.data
+    } catch (error) {
+      console.error('Error fetching public profile:', error)
+      throw error
+    }
   }
 
+  // Para usuários autenticados, usar token
   const api = createServerApi(token)
   const res = await api.get(`/user/name/${name}`)
   
